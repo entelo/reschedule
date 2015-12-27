@@ -1,4 +1,5 @@
 .DS_Store
+Dockerfile
 Gemfile.lock
 *.gem
 log/*.log
