@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Reschedule::Rescheduler do
+describe Reschedule::Reschedulers::MemoryThreshold do
   include RescheduleSpecHelper
 
   describe '#run' do
@@ -22,17 +22,22 @@ describe Reschedule::Rescheduler do
     end
 
     context 'memory threshold exceeded' do
-      let(:memory_threshold) { 0.01 }
-
       it 'updates the replication controller' do
         expect_any_instance_of(Reschedule::Kubernetes::Api).to receive(:update_replication_controller).with(replication_controllers[0])
-        expect_any_instance_of(Reschedule::Kubernetes::Api).to receive(:update_replication_controller).with(replication_controllers[0])
-        described_class.new.run
+        described_class.new('memory_threshold' => 0.01).run
+      end
+
+      context 'dry run' do
+        let(:dry_run) { true }
+
+        it 'does not update any replication controllers' do
+          expect_any_instance_of(Reschedule::Kubernetes::Api).to_not receive(:update_replication_controller)
+          described_class.new.run
+        end
       end
     end
 
     context 'memory threshold exceeded in a non-default namespace' do
-      let(:memory_threshold) { 0.01 }
       let(:pods) do
         pod = pod_default
         pod.metadata.namespace = 'foo'
@@ -41,7 +46,7 @@ describe Reschedule::Rescheduler do
 
       it 'does not update any replication controllers' do
         expect_any_instance_of(Reschedule::Kubernetes::Api).to_not receive(:update_replication_controller)
-        described_class.new.run
+        described_class.new('memory_threshold' => 0.01).run
       end
     end
   end

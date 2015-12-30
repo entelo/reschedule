@@ -16,8 +16,6 @@ ADD . $APP_HOME
 ENV KUBERNETES_API_URL https://kubernetes.mycompany.com/api/
 ENV KUBERNETES_API_USERNAME myusername
 ENV KUBERNETES_API_PASSWORD mypassword
-ENV RUN_INTERVAL 10m
-ENV MEMORY_THRESHOLD 0.8
 
 ENTRYPOINT ["bundle", "exec"]
 CMD ["./bin/reschedule"]

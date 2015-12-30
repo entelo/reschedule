@@ -3,11 +3,7 @@
 require_relative '../lib/reschedule'
 
 begin
-  scheduler = Rufus::Scheduler.new
-  scheduler.every Reschedule.configuration.run_interval do
-    Reschedule::Rescheduler.new.run
-  end
-  scheduler.join
+  Reschedule::Manager.new.run
 rescue => e
   STDERR.puts e.message
   STDERR.puts e.backtrace.join("\n")

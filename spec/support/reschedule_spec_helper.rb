@@ -15,7 +15,7 @@ module RescheduleSpecHelper
       config.kubernetes_api_url = "https://#{kube_host}/api/"
       config.kubernetes_api_username = kube_username
       config.kubernetes_api_password = kube_password
-      config.memory_threshold = memory_threshold
+      config.dry_run = dry_run
     end
   end
 
@@ -24,7 +24,7 @@ module RescheduleSpecHelper
   let(:kube_password) { 'bar' }
   let(:kube_url) { "https://#{kube_username}:#{kube_password}@#{kube_host}/api/" }
   let(:heapster_url) { "#{kube_url}v1/proxy/namespaces/kube-system/services/heapster/api/v1/" }
-  let(:memory_threshold) { 0.8 }
+  let(:dry_run) { false }
 
   let(:node_names) { (0..1).map { |i| "node-#{i}.compute.internal" } }
   let(:replication_controller_names) { (0..1).map { |i| "rc-#{i}" } }

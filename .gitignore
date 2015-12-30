@@ -1,5 +1,6 @@
 .DS_Store
 Dockerfile
+reschedule.yml
 Gemfile.lock
 *.gem
 log/*.log

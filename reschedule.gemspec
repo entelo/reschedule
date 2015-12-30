@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activesupport'
   s.add_dependency 'httparty'
-  s.add_dependency 'kubeclient'
+  s.add_dependency 'kubeclient', '>= 0.9.0'
   s.add_dependency 'rufus-scheduler'
 
   s.add_development_dependency 'rspec'

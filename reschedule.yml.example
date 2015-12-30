@@ -1,0 +1,10 @@
+reschedulers:
+  -
+    type: All
+    every: 12h
+  -
+    type: MemoryThreshold
+    every: 30m
+    options:
+      memory_threshold: 0.8
+      namespace: mynamespace

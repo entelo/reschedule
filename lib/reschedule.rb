@@ -4,6 +4,7 @@ require 'kubeclient'
 require 'rufus-scheduler'
 
 directory = File.dirname(File.absolute_path(__FILE__))
+Dir.glob("#{directory}/reschedule/reschedulers/base.rb") { |file| require file }
 Dir.glob("#{directory}/reschedule/**/*.rb") { |file| require file }
 
 module Reschedule
