@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'kubeclient', '>= 0.9.0'
   s.add_dependency 'rufus-scheduler'
 
+  s.add_development_dependency 'hashie'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'webmock'
 end

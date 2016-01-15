@@ -17,6 +17,11 @@ module Reschedule
         replication_controllers = kubernetes_api.get_replication_controllers(namespace: options['namespace'])
         Reschedule.logger.debug "Found #{replication_controllers.length} replication controllers"
         return if Reschedule.configuration.dry_run
+
+        replication_controllers.select! do |replication_controller|
+          image = replication_controller.spec['table'][:template]['spec']['containers'][0]['image']
+          !image.include?('/reschedule')
+        end
         replication_controllers.each do |replication_controller|
           reschedule_replication_controller(replication_controller)
         end

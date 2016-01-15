@@ -10,6 +10,30 @@ module RescheduleSpecHelper
     stub_request(:get, url).to_return(response)
   end
 
+  def create_replication_controller(image)
+    Hashie::Mash.new(
+      metadata: {
+        name: 'foo',
+        spec: {
+          replicas: 1
+        }
+      },
+      spec: {
+        table: {
+          template: {
+            spec: {
+              containers: [
+                {
+                  image: image
+                }
+              ]
+            }
+          }
+        }
+      }
+    )
+  end
+
   before :each do
     Reschedule.configure do |config|
       config.kubernetes_api_url = "https://#{kube_host}/api/"
@@ -29,6 +53,7 @@ module RescheduleSpecHelper
   let(:node_names) { (0..1).map { |i| "node-#{i}.compute.internal" } }
   let(:replication_controller_names) { (0..1).map { |i| "rc-#{i}" } }
 
+  let(:node_stats) { [node_stat_default, node_stat_default] }
   let(:nodes) do
     (0..1).map do |i|
       {
@@ -40,21 +65,6 @@ module RescheduleSpecHelper
   end
   let(:pods) { [pod_default] }
   let(:replication_controllers) { [double.as_null_object] }
-  let(:node_stats) { [node_stat_default, node_stat_default] }
-
-  let(:pod_default) do
-    OpenStruct.new({
-      spec: OpenStruct.new({ nodeName: node_names[0] }),
-      metadata: OpenStruct.new({
-        annotations: {
-          'kubernetes.io/created-by' => {
-            reference: { name: replication_controller_names[0] }
-          }.to_json
-        },
-        namespace: 'default'
-      })
-    })
-  end
 
   let(:node_stat_default) do
     {
@@ -78,5 +88,19 @@ module RescheduleSpecHelper
         {"minute"=>{"average"=>2815111168, "percentile"=>2815111168, "max"=>2815111168},
          "hour"=>{"average"=>2810043869, "percentile"=>2814377984, "max"=>2818572288},
              "day"=>{"average"=>2805639850, "percentile"=>2810183680, "max"=>2810183680}}}}
+  end
+
+  let(:pod_default) do
+    Hashie::Mash.new({
+      spec: { nodeName: node_names[0] },
+      metadata: {
+        annotations: {
+          'kubernetes.io/created-by' => {
+            reference: { name: replication_controller_names[0] }
+          }.to_json
+        },
+        namespace: 'default'
+      }
+    })
   end
 end
