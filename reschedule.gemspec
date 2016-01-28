@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split($\)
   s.name          = 'reschedule'
   s.require_paths = ['lib']
+  s.executables   = ['reschedule']
   s.version       = Reschedule::VERSION
   s.license       = 'MIT'
 
