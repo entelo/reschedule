@@ -20,7 +20,8 @@ module Reschedule
 
         replication_controllers.select! do |replication_controller|
           Reschedule.logger.debug replication_controller.to_h.to_json
-          image = replication_controller.spec['table'][:template]['spec']['containers'][0]['image']
+          template = replication_controller.spec[:template] || replication_controller.spec['table'][:template]
+          image = template['spec']['containers'][0]['image']
           next if image.include?('/reschedule')
           next if replication_controller.spec.replicas == 0
           next if replication_controller_name_regex && replication_controller.metadata.name !~ replication_controller_name_regex
