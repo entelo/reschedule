@@ -28,27 +28,8 @@ module Reschedule
 
         Reschedule.logger.debug "Found #{replication_controllers.length} replication controllers to reschedule"
         replication_controllers.each do |replication_controller|
-          reschedule_replication_controller(replication_controller)
+          reschedule_replication_controller(replication_controller.metadata.name)
         end
-      end
-
-      private
-
-      def reschedule_replication_controller(replication_controller)
-        replication_controller_name = replication_controller.metadata.name
-        Reschedule.logger.debug "Rescheduling #{replication_controller_name}"
-
-        unless Reschedule.configuration.dry_run
-          original_replicas = replication_controller.spec.replicas
-          replication_controller.spec.replicas = 0
-          kubernetes_api.update_replication_controller(replication_controller)
-          sleep 0.5
-          replication_controller = kubernetes_api.get_replication_controllers(label_selector: "name=#{replication_controller_name}").first
-          replication_controller.spec.replicas = original_replicas
-          kubernetes_api.update_replication_controller(replication_controller)
-        end
-
-        Reschedule.logger.debug "Rescheduled #{replication_controller_name}"
       end
     end
   end
