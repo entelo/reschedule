@@ -32,6 +32,8 @@ reschedulers:
   -
     type: All
     every: 12h
+    options:
+      replication_controller_name_match: my-rc-name
   -
     type: MemoryThreshold
     every: 30m
@@ -49,6 +51,7 @@ Reschedules all pods.
 Options:
 
 * `namespace` - The namespace of the pods
+* `replication_controller_name_match` - Only pods of replication controllers with names that match this regex will be rescheduled.
 
 #### MemoryThreshold
 
