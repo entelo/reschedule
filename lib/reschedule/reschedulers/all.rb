@@ -19,7 +19,6 @@ module Reschedule
         Reschedule.logger.debug "Found #{replication_controllers.length} replication controllers"
 
         replication_controllers.select! do |replication_controller|
-          Reschedule.logger.debug replication_controller.to_h.to_json
           template = replication_controller.spec[:template] || replication_controller.spec['table'][:template]
           image = template['spec']['containers'][0]['image']
           next if image.include?('/reschedule')
