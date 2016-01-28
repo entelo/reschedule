@@ -19,7 +19,7 @@ module Reschedule
         Reschedule.logger.debug "Found #{replication_controllers.length} replication controllers"
 
         replication_controllers.select! do |replication_controller|
-          puts replication_controller.inspect
+          Reschedule.logger.debug replication_controller.inspect
           image = replication_controller.spec['table'][:template]['spec']['containers'][0]['image']
           next if image.include?('/reschedule')
           next if replication_controller.spec.replicas == 0
