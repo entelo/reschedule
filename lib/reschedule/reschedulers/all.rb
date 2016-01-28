@@ -43,6 +43,7 @@ module Reschedule
           replication_controller.spec.replicas = 0
           kubernetes_api.update_replication_controller(replication_controller)
           sleep 0.5
+          replication_controller = kubernetes_api.get_replication_controllers(label_selector: "name=#{replication_controller_name}").first
           replication_controller.spec.replicas = original_replicas
           kubernetes_api.update_replication_controller(replication_controller)
         end
