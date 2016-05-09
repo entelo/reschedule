@@ -1,5 +1,4 @@
-Reschedule
-==========
+<h1><img src="docs/logo.png?raw=true" width="27" /> Reschedule</h1>
 
 Automatic, configurable Kubernetes rescheduling
 
